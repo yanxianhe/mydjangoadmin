@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
-
+import time
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -129,22 +129,68 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+#########################
+## Django Logging  INFO
+#########################
+#LOGGING_DIR 日志文件存放目录
+LOGGING_DIR = "./logs"
+log_date = time.strftime("%Y-%m-%d%H:%M:%S", time.localtime())
+
+if not os.path.exists(LOGGING_DIR):
+    os.mkdir(LOGGING_DIR)
+
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console':{
+     'disable_existing_loggers': True,
+     'formatters': {
+         'simple': {
+             'format': '[%(asctime)s] %(levelname)s : %(message)s'
+         },
+         'verbose': {
+             'format': '[%(asctime)s] %(levelname)s %(module)s %(process)d %(thread)d : %(message)s'
+         },
+         'standard':{
+             'format': '%(asctime)s [%(threadName)s:%(thread)d] [%(name)s:%(lineno)d] [%(levelname)s]- %(message)s'
+         },
+     },
+     'handlers': { 
+         'mail_admins':{
+             'level': 'ERROR',
+             'class': 'django.utils.log.AdminEmailHandler',
+             'include_html': True,
+         },
+         'console':{
             'level':'DEBUG',
             'class':'logging.StreamHandler',
+            'formatter':'standard',
         },
-    },
-    'loggers': {
-        'django.db.backends': {
+         'default': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGGING_DIR,'debug_default.log'),
+            'maxBytes': 1024*1024*5,
+            'backupCount': 5,
+            'formatter':'standard',
+         },
+         'info': {
+             'level': 'INFO',
+             'class': 'logging.handlers.RotatingFileHandler',
+             'filename':os.path.join(LOGGING_DIR,'info.log'),
+             'formatter': 'simple',
+         },
+     },
+     'loggers': {
+         'django': {
+             'handlers': ['console','default','info'],
+             'level':'INFO',
+             'propagate': True,
+         },
+         'django.db.backends': {
             'handlers': ['console'],
             'propagate': True,
             'level':'DEBUG',
         },
-    }
+     },
 }
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
