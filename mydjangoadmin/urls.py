@@ -21,8 +21,9 @@ from mydjangoadmin.check import check_views
 from mydjangoadmin.fileclass import file_views
 
 urlpatterns = [
+
+    url(r'^$', views.ping),
     url(r'^admin/', admin.site.urls),
-    url(r'^ping/', views.ping),
     url(r'^check/', check_views.check),
     url(r'^upload_file/', file_views.upload_file),
 ]
