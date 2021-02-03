@@ -60,7 +60,10 @@ http://ip:port/admin/
 
 ~~~~~~
 http://ip:port/ping/
+http://ip:port/check/
 ~~~~~~
+
+* 直接拉取项目需要初始化一下 sql 文件中的 sql
 
 * 用户
 
