@@ -15,16 +15,21 @@ import time
 import pyclamd,jieba
 
 
-# 保存上传文件返回文件路径
-#  dir_path req.FILES.get("myfile", None)
-def save_file(dir_path,myfile) :
+## 校验文件/目录是否可以保存/创建
+def file_chek(dir_path) :
     if not os.path.isfile(dir_path) :
         pass
     else :
         logger.info(" save_file -------------------> %s" % "存在相同的文件")
-        return ""
+        return False
     if not os.path.exists(dir_path) :
-        # 创建文件夹
+        return True
+    
+        
+# 保存上传文件返回文件路径
+#  dir_path req.FILES.get("myfile", None)
+def save_file(dir_path,myfile) :
+    if(file_chek(dir_path)):
         os.mkdir(dir_path)
     try:
         # 打开特定的文件进行二进制的写操作
@@ -75,7 +80,8 @@ def upload_file(req):
         if not myFile:
             return HttpResponse(json.dumps({"status_code": "999999", "msg": "no files for upload!"}))
         # 保存文件
-        file_paths = save_file(curPath,myFile)
+        curPaths = curPath + "/file\\"
+        file_paths = save_file(curPaths,myFile)
         if(len(file_paths) == 0) :
             return HttpResponse(json.dumps({"status_code": "999999", "msg": "save file error"}))
         try :
