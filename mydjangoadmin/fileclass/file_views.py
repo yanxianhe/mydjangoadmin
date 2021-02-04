@@ -8,6 +8,8 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 import os
+import  logging
+logger = logging.getLogger("django")
 
 import time
 import pyclamd,jieba
@@ -19,8 +21,9 @@ def save_file(dir_path,myfile) :
     if not os.path.isfile(dir_path) :
         pass
     else :
+        logger.info(" save_file -------------------> %s" % "存在相同的文件")
         return ""
-    if not os.path.isdir(dir_path) :
+    if not os.path.exists(dir_path) :
         # 创建文件夹
         os.mkdir(dir_path)
     try:
@@ -32,7 +35,7 @@ def save_file(dir_path,myfile) :
         destination.close()
         return os.path.join(dir_path, myfile.name)
     except Exception as e:
-        print("------> :: %s " % e)
+        logger.error(" save_file -------------------> %s" % e)
         return ""
 
 ## 文件绝对路径 file_path
@@ -40,6 +43,7 @@ def save_file(dir_path,myfile) :
 def get_file_properties(file_path) :
     # 判断文件
     if not os.path.isfile(file_path) :
+        logger.info(" get_file_properties  -------------------> %s" % "空的文件")
         return ""
     else :
         statinfo = os.stat(file_path)
@@ -58,7 +62,7 @@ def check_file(file_path) :
         cd_msg = cd.scan_file(file_path)
         return cd_msg
     except Exception as e:
-        print("------> :: %s " % "------> :: %s " % e)
+        logger.error(" check_file -------------------> %s" % e)
         return ""
 
 
@@ -86,7 +90,7 @@ def upload_file(req):
                 return HttpResponse(json.dumps({"status_code": "999999", "msg": "get_file_properties file error"}))
             ## 文件属性入库/用户
         except Exception as e :
-            print("------> :: %s " % e)
+            logger.error(" upload_file -------------------> %s" % e)
             os.remove(file_paths)
             msg = "error"
     return HttpResponse(json.dumps({"status_code": "000000", "msg": msg}))
