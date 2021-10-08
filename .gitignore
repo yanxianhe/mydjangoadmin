@@ -131,3 +131,17 @@ dmypy.json
 .vscode/*
 
 db.sqlite3
+
+## models 
+
+migrations
+
+# requirements
+
+requirements.txt
+
+# user-defined
+
+*.sh
+old
+

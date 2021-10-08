@@ -16,14 +16,15 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from . import views
-
 from mydjangoadmin.check import check_views
 from mydjangoadmin.fileclass import file_views
-
+from mydjangoadmin.users import user_views
 urlpatterns = [
 
     url(r'^$', views.ping),
     url(r'^admin/', admin.site.urls),
     url(r'^check/', check_views.check),
     url(r'^upload_file/', file_views.upload_file),
+    # 重写认证 待写
+    url(r'^user/login', user_views.login),
 ]

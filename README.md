@@ -49,6 +49,14 @@ python3 manage.py createsuperuser
 python3 manage.py runserver 0.0.0.0:7890
 ~~~~~~
 
+* git clone 后注意添加 models 
+
+~~~~~~
+python3 manage.py makemigrations --empty mydjangoadmin 
+python3 manage.py makemigrations
+python3 manage.py migrate
+~~~~~~
+
 * 管理员访问地址
 
 ~~~~~~

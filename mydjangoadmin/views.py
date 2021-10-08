@@ -7,8 +7,9 @@
 from django.http import HttpResponse
 import json
 import  logging
+from django.contrib.auth.decorators import login_required
 logger = logging.getLogger("django")
-
+@login_required
 def ping(req):
     if req.method == 'GET':
         logger.info(" -------------------> ping  get")

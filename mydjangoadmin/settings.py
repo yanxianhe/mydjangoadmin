@@ -31,9 +31,10 @@ STATICFILES_DIRS = [
 ]
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['myapp','127.0.0.1']
 
-
+# 添加AUTH_USRE_MODEL 替换默认的user
+#AUTH_USER_MODEL = 'users.UserProfile'
 # Application definition
 
 INSTALLED_APPS = [
@@ -46,9 +47,11 @@ INSTALLED_APPS = [
     'mydjangoadmin',
 ]
 
+# 中间件
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -60,10 +63,12 @@ ROOT_URLCONF = 'mydjangoadmin.urls'
 
 TEMPLATES = [
     {
+        # 引擎自带渲染模板
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
+            # 模板中间件
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
@@ -92,7 +97,7 @@ DATABASES = {
         'NAME': 'djangoadmin',
         'USER':'root',
         'PASSWORD':'root',
-        'HOST':'127.0.0.1',
+        'HOST':'mysql',
         'PORT':4306,
     }
 }
@@ -128,7 +133,34 @@ LANGUAGE_CODE = 'zh-Hans'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+DATETIME_FORMAT = "Y-m-d H:i:sO"
+date_format = 'Y-m-d'
+#########################
+## 允许跨域访问
+#########################
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
+CORS_ALLOW_METHODS = (
+    'GET',
+    'POST',
+    'DELETE',
+    'PATCH',
+    'PUT',
+    'OPTIONS',
+    'VIEW',
+)
+CORS_ALLOW_HEADERS = (
+    'XMLHttpRequest',
+    'X_FILENAME',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftiken',
+    'x-requested-witd',
+)
 #########################
 ## Django Logging  INFO
 #########################
